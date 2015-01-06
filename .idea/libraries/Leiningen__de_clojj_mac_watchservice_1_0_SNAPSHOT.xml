@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Leiningen: de.clojj/mac-watchservice:1.0-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/de/clojj/mac-watchservice/1.0-SNAPSHOT/mac-watchservice-1.0-SNAPSHOT.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="barbarywatchservice:jar">
+    <output-path>$PROJECT_DIR$/classes/artifacts/barbarywatchservice_jar</output-path>
+    <root id="archive" name="barbarywatchservice.jar">
+      <element id="module-output" name="barbarywatchservice" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/net/java/dev/jna/jna/4.1.0/jna-4.1.0.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
