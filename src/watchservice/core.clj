@@ -76,43 +76,6 @@
     (catch java.nio.file.ClosedWatchServiceException _ nil)
     (catch com.barbarysoftware.watchservice.ClosedWatchServiceException _ nil)))
 
-;-----------------------------------------------------------------------
-(defn- start-service [paths]
-  (let [service (new-watch-service)
-        doreg #(register-recursive %1 %2 [:create :modify :delete])]
-    (doseq [path paths] (doreg service (io/file path)))
-    (let [c (async/chan)
-          service-channel (async/thread
-                            (loop []
-                              (async/<!! (async/timeout 300))
-                              (let [watch-key (poll-watch-key service 20 TimeUnit/MILLISECONDS)]
-                                (if watch-key
-                                  (if-not (.isValid watch-key)
-                                    (do (println- "invalid watch key %s\n" (.watchable watch-key))
-                                        (recur))
-                                    (do (doseq [event (.pollEvents watch-key)]
-                                          (let [dir (.toFile (.watchable watch-key))
-                                                changed (io/file dir (str (.context event)))
-                                                etype (enum->kw service (.kind event))
-                                                dir? (.isDirectory changed)]
-                                            (cond
-                                              (and dir? (= :create etype)) (doreg service changed)
-                                              (not dir?) (do (println- "file-event: " etype " : " changed) (async/>!! c [etype (.getPath changed)])))))
-                                        (and watch-key (.reset watch-key) (recur))))
-                                  (recur)))))]
-      [service c service-channel])))
-
-(defn make-watcher [paths]
-  (let [service-id (str (gensym))
-        [service c wsc] (start-service paths)
-        _ (println- "started watcher: " service-id)
-        _ (println- "watch-channel: " c)
-        fs (->> paths (mapcat (comp file-seq io/file)) (filter (memfn isFile)))]
-    (swap! watchers assoc service-id service)
-    (doseq [f fs] (do (println- "initial files: " (.getPath f))))
-    [service-id c wsc]))
-;-----------------------------------------------------------------------
-
 (defn- start-service-go [paths f recursive]
   (let [service (new-watch-service)
         events [:create :modify :delete]

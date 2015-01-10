@@ -69,25 +69,3 @@
           (async/>!! ctrl-chan :stop)
           (finally
             (stop-watcher service-id)))))))
-
-;(deftest test-watch-dir
-;  (testing "create file + delete"
-;
-;    (let [[ws c wsc] (make-watcher [tmp])
-;          file1-path (str tmp "/file1.txt")]
-;
-;      (try
-;
-;        ;(Thread/sleep 2000)
-;
-;        (spit file1-path "content...")
-;        ;(Thread/sleep 2000)
-;        (is (= [:create file1-path] (async/<!! c)))
-;
-;        (delete file1-path)
-;        ;(Thread/sleep 2000)
-;        (is (= [:delete file1-path] (async/<!! c)))
-;
-;        (finally
-;          (stop-watcher ws))))))
-
