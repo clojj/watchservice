@@ -154,7 +154,7 @@
                        (println- "SWITCH " cmd-old cmd-new))
                      (println- "suspended...")
 
-                     (let [[cmd _] (async/alts! [ctrl-chan (async/timeout 3000)])]
+                     (let [[cmd _] (async/alts! [ctrl-chan (async/timeout Integer/MAX_VALUE)])]
                        (recur :suspend (if (nil? cmd) :suspend cmd))))
 
           :stop (println- "stopped")
