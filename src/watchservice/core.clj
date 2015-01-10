@@ -2,8 +2,7 @@
   (:import
     [java.nio.file FileSystems Path Paths StandardWatchEventKinds]
     [com.barbarysoftware.watchservice StandardWatchEventKind WatchableFile]
-    (java.util.concurrent TimeUnit)
-    (java.io File))
+    (java.util.concurrent TimeUnit))
   (:require
     [clojure.java.io :as io]
     [clojure.core.async :as async]))
