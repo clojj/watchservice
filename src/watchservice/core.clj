@@ -81,11 +81,13 @@
         doreg (if recursive #(register-recursive %1 %2 events) #(register %1 %2 events))
         ctrl-chan (async/chan)]
 
-    (doseq [path paths] (doreg service (io/file path)))
+    (doseq [path paths] (doreg service (io/file path))) ; todo store watch-keys
 
     (async/go-loop [cmd-old :run cmd-new :run]
       (let [chg-state (not (= cmd-old cmd-new))]
         (condp = cmd-new
+
+          ; todo cmd for cancelling watch-keys
 
           :run (do
                  (when chg-state
@@ -95,14 +97,14 @@
                  (let [watch-key (poll-watch-key service 20 TimeUnit/MILLISECONDS)]
                    (when watch-key
                      (if-not (.isValid watch-key)
-                       (do (println- "invalid watch key %s\n" (.watchable watch-key)))
+                       (do (println- "invalid watch key %s\n" (.watchable watch-key))) ; todo
                        (do (doseq [event (.pollEvents watch-key)]
                              (let [dir (.toFile (.watchable watch-key))
                                    changed (io/file dir (str (.context event)))
                                    etype (enum->kw service (.kind event))
                                    dir? (.isDirectory changed)]
                                (cond
-                                 (and dir? (= :create etype)) (doreg service changed)
+                                 (and dir? (= :create etype)) (doreg service changed) ; todo
                                  (not dir?) (do
                                               (println- "file-event: " etype " : " changed)
                                               (f etype (.getPath changed))))))
