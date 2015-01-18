@@ -17,7 +17,7 @@
     <orderEntry type="library" name="Leiningen: de.clojj/mac-watchservice:1.0-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Leiningen: me.raynes/fs:1.4.6" level="project" />
     <orderEntry type="library" name="Leiningen: net.java.dev.jna/jna:4.1.0" level="project" />
-    <orderEntry type="library" name="Leiningen: org.clojure/clojure:1.7.0-alpha4" level="project" />
+    <orderEntry type="library" name="Leiningen: org.clojure/clojure:1.7.0-alpha5" level="project" />
     <orderEntry type="library" name="Leiningen: org.clojure/core.async:0.1.346.0-17112a-alpha" level="project" />
     <orderEntry type="library" name="Leiningen: org.clojure/tools.nrepl:0.2.3" level="project" />
     <orderEntry type="library" name="Leiningen: org.apache.commons/commons-compress:1.8" level="project" />

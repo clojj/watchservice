@@ -30,21 +30,24 @@
     (testing "fs events with go-loop"
 
       (let [file1 (str tmp "/file1.txt")
+            file2 (str tmp "/file2.txt")
             c (async/chan 10)
             [service-id ctrl-chan] (make-watcher-go [tmp] #(do
-                                                              (println %1 " " %2)
-                                                              (async/>!! c %1)))]
+                                                            (println "*CALLBACK* " %1 " " %2)
+                                                            (async/>!! c [%1 %2])))]
 
         (try
           (Thread/sleep 2000)
           (spit file1 "content...")
           (Thread/sleep 1000)
-          (is (= (async/<!! c) :create))
+          (is (= (async/<!! c) [:create file1]))
           (async/>!! ctrl-chan :suspend)
           (delete file1)
           (Thread/sleep 5000)
           (async/>!! ctrl-chan :run)
-          (is (= (async/<!! c) :delete))
+          (is (= (async/<!! c) [:delete file1]))
+          (spit file2 "content...")
+          (is (= (async/<!! c) [:create (str tmp "/file2.txt")]))
           (Thread/sleep 5000)
           (async/>!! ctrl-chan :stop)
           (finally

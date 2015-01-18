@@ -92,9 +92,8 @@
           :run (do
                  (when chg-state
                    (println- "SWITCH " cmd-old cmd-new))
-                 (println- "running...")
 
-                 (let [watch-key (poll-watch-key service 20 TimeUnit/MILLISECONDS)]
+                 (let [watch-key (poll-watch-key service 500 TimeUnit/MILLISECONDS)]
                    (when watch-key
                      (if-not (.isValid watch-key)
                        (do (println- "invalid watch key %s\n" (.watchable watch-key))) ; todo
@@ -110,8 +109,8 @@
                                               (f etype (.getPath changed))))))
                            (if (not (.reset watch-key)) (println- "error"))))))
 
-                 (let [[cmd _] (async/alts! [ctrl-chan (async/timeout 1000)])]
-                   (recur :run (if (nil? cmd) :run cmd))))
+                 (let [[cmd _] (async/alts! [ctrl-chan] :default :run)]
+                   (recur :run cmd)))
 
           :suspend (do
                      (when chg-state
